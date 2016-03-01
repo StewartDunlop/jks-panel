@@ -4,7 +4,7 @@
   "authors": [
     "Stewart Dunlop <stewartdunlopuk@gmail.com>"
   ],
-  "description": "Angular directive for draggable, resizable accordion panel, using code injection",
+  "description": "Angular directive for draggable, resizable accordion panel, using code injection with no dependency on jquery",
   "main": "jkaPanel.js",
   "keywords": [
     "Draggable",
