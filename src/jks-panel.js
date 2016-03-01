@@ -6,12 +6,8 @@
  */
 'use strict';
 /*jshint multistr: true */
-
-angular.module('jksPanel', [])
-    .service('ngDraggable', [function() {
-        var scope = this;
-    }])
-    .directive('jksPanel', function ($document) {
+angular.module('jks-panel', [])
+    .directive('jksPanel', ['$document', function ($document) {
         return {
             restrict: 'A',
             replace: true,
@@ -28,6 +24,7 @@ angular.module('jksPanel', [])
                 <div panelsediv></div>\
                 </div>',
             controller: function($scope, $element, $attrs)  {
+                console.log('STEW is this working');
                 // Move the panel
                 var xConst = $scope.paneldata.panelleft;
                 var yConst = $scope.paneldata.paneltop;
@@ -181,173 +178,163 @@ angular.module('jksPanel', [])
 
             }
         };
-    });
-
-
-angular.module('scripts').directive('panelsdiv', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        require: '^jksPanel',
-        replace: true,
-        template: '<div id="{{paneldata.id}}_jks_sdiv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>',
-        link: function(scope, element, attr, parentCtrl) {
-            var dragStart_s = function(event) {
-                scope.jks_dragStart(event, element, 's');
-            };
-            element.bind('mousedown', dragStart_s);
-        }
-    };
-}]);
-
-angular.module('scripts').directive('panelediv', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        require: '^jksPanel',
-        replace: true,
-        template: '<div id="{{paneldata.id}}_jks_ediv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>',
-        link: function(scope, element, attr, parentCtrl) {
-            var dragStart_e = function(event) {
-                scope.jks_dragStart(event, element, 'e');
-            };
-            element.bind('mousedown', dragStart_e);
-        }
-    };
-}]);
-
-angular.module('scripts').directive('panelsediv', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        require: '^jksPanel',
-        replace: true,
-        template: '<div id="{{paneldata.id}}_jks_sediv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-se" style="z-index: 90;"></div>',
-        link: function(scope, element, attr, parentCtrl) {
-            var dragStart_se = function(event) {
-                scope.jks_dragStart(event, element, 'se');
-            };
-            element.bind('mousedown', dragStart_se);
-        }
-    };
-}]);
-
-// Creates a draggable handle that leaves the rest of the panel free
-angular.module('scripts').directive('panelaccordionheading', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        // All the data is on the top level dir - require this to get data and funcs
-        require: '^jksPanel',
-        template: '<div id={{paneldata.id}}_panelHeadingBackground" class="jks_panelHeadingBackground">\
-            <span ng-click="jks_toggleBody()" ng-show="paneldata.accordion && paneldata.showBody!==true" id="{{paneldata.id}}_accordionCtrl" class="jks_accordionCtrl glyphicon glyphicon-menu-down"></span>\
-            <span ng-click="jks_toggleBody()" ng-show="paneldata.accordion && paneldata.showBody===true" id="{{paneldata.id}}_accordionCtrl" class="jks_accordionCtrl glyphicon glyphicon-menu-right"></span>\
-            <span ng-click="jks_toggleBody()" id="{{paneldata.id}}_panelHeading" class="jks_panelHeading">{{paneldata.heading}}</span>\
-            <span ng-click="jks_closePanel()" ng-show="paneldata.isClosable===true" id="{{paneldata.id}}_panelClose" class="jks_accordionCtrl glyphicon glyphicon-remove-circle"></span>\
-            </div>',
-        // The panel holds the positioning and size controls
-        // Add conditional code for whether draggable is on or off
-        link: function(scope, element, attr, parentCtrl) {
-            if (scope.paneldata.draggable) {
-                // add or remove cursor move
-                element.css('cursor', 'move');
+    }])
+    .directive('panelsdiv', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            require: '^jksPanel',
+            replace: true,
+            template: '<div id="{{paneldata.id}}_jks_sdiv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>',
+            link: function(scope, element, attr, parentCtrl) {
+                var dragStart_s = function(event) {
+                    scope.jks_dragStart(event, element, 's');
+                };
+                element.bind('mousedown', dragStart_s);
             }
-            // Closes the panel
-            scope.jks_closePanel = function() {
-                scope.paneldata.isVisibleFlag = false;
-            };
-
-            // on click - should only work for icon
-            scope.jks_toggleBody = function() {
-                if (scope.paneldata.accordion && scope.paneldata.moving === '') {
-                    parentCtrl.toggleBody();
-                }
-                scope.paneldata.moving = '';
-            };
-
-            // Draggable code start
-            var startX = 0, startY = 0, x = 0, y = 0;
-            element.on('mousedown', function(event) {
+        };
+    }])
+    .directive('panelediv', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            require: '^jksPanel',
+            replace: true,
+            template: '<div id="{{paneldata.id}}_jks_ediv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>',
+            link: function(scope, element, attr, parentCtrl) {
+                var dragStart_e = function(event) {
+                    scope.jks_dragStart(event, element, 'e');
+                };
+                element.bind('mousedown', dragStart_e);
+            }
+        };
+    }])
+    .directive('panelsediv', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            require: '^jksPanel',
+            replace: true,
+            template: '<div id="{{paneldata.id}}_jks_sediv" ng-show="paneldata.resizable===true && paneldata.showBody===true" class="ui-resizable-handle ui-resizable-se" style="z-index: 90;"></div>',
+            link: function(scope, element, attr, parentCtrl) {
+                var dragStart_se = function(event) {
+                    scope.jks_dragStart(event, element, 'se');
+                };
+                element.bind('mousedown', dragStart_se);
+            }
+        };
+    }])
+    .directive('panelaccordionheading', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            // All the data is on the top level dir - require this to get data and funcs
+            require: '^jksPanel',
+            template: '<div id={{paneldata.id}}_panelHeadingBackground" class="jks_panelHeadingBackground">\
+                <span ng-click="jks_toggleBody()" ng-show="paneldata.accordion && paneldata.showBody!==true" id="{{paneldata.id}}_accordionCtrl" class="jks_accordionCtrl glyphicon glyphicon-menu-down"></span>\
+                <span ng-click="jks_toggleBody()" ng-show="paneldata.accordion && paneldata.showBody===true" id="{{paneldata.id}}_accordionCtrl" class="jks_accordionCtrl glyphicon glyphicon-menu-right"></span>\
+                <span ng-click="jks_toggleBody()" id="{{paneldata.id}}_panelHeading" class="jks_panelHeading">{{paneldata.heading}}</span>\
+                <span ng-click="jks_closePanel()" ng-show="paneldata.isClosable===true" id="{{paneldata.id}}_panelClose" class="jks_accordionCtrl glyphicon glyphicon-remove-circle"></span>\
+                </div>',
+            // The panel holds the positioning and size controls
+            // Add conditional code for whether draggable is on or off
+            link: function(scope, element, attr, parentCtrl) {
                 if (scope.paneldata.draggable) {
-                    // Prevent default dragging of selected content
-                    event.preventDefault();
-                    // Work out where your cursor is in respect of the panel when you first click
-                    startX = event.pageX - x;
-                    startY = event.pageY - y;
-                    // Attach handlers
-                    $document.bind('mousemove', mousemove);
-                    $document.bind('mouseup', mouseup);
+                    // add or remove cursor move
+                    element.css('cursor', 'move');
                 }
-            });
-            var mousemove = function(event) {
-                y = event.pageY - startY;
-                x = event.pageX - startX;
-                // Send the coords up to the parent so the Panel moves with the Heading
-                parentCtrl.updatePanelPosn(x,y);
-            };
+                // Closes the panel
+                scope.jks_closePanel = function() {
+                    scope.paneldata.isVisibleFlag = false;
+                };
 
-            var mouseup = function(event) {
-                //console.log('mouseup el width '+ element[0].style.width);
-                event.preventDefault();
-                // Disconnect the handlers
-                $document.unbind('mousemove', mousemove);
-                $document.unbind('mouseup', mouseup);
-            };
-            // Draggable code end
-        }
-    };
-}]);
-
-// Messaging sections
-angular.module('scripts').directive('panelaccordionmessage', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        require: '^jksPanel',
-        template: '<div ng-show="paneldata.showBody===true && paneldata.message.value.length>0" id="{{paneldata.id}}_panelMessage" class="jks_panelMessage">\
-                        <span id="{{paneldata.id}}_message" class="jks_message" ng-style="{\'color\':getColour()}">{{paneldata.message.value}}</span>\
-                        <span ng-style="{\'display\':\'inline-block\', \'vertical-align\':\'top\'}">\
-                        <a class="btn-sm btn-default" data-ng-click="handleMessage()">OK</a>\
-                        </span>\
-                   </div>',
-        link: function(scope, element, attr, parentCtrl) {
-            scope.getColour = function() {
-                if (scope.paneldata.message && scope.paneldata.message.type) {
-                    var colour = '';
-                    switch (scope.paneldata.message.type) {
-                        case('success'):
-                            colour = 'green';
-                            break;
-                        case('error'):
-                            colour = 'red';
-                            break;
-                        case('busy'):
-                            colour = 'orange';
-                            break;
+                // on click - should only work for icon
+                scope.jks_toggleBody = function() {
+                    if (scope.paneldata.accordion && scope.paneldata.moving === '') {
+                        parentCtrl.toggleBody();
                     }
-                    return colour;
-                }
-            };
+                    scope.paneldata.moving = '';
+                };
 
-            scope.handleMessage = function() {
-                if (scope.paneldata.handleMessage) {
-                    scope.paneldata.handleMessage();
-                } else {
-                    scope.paneldata.message = {};
-                }
-                parentCtrl.calcHeight(scope.paneldata);
-            };
-        }
-    };
-}]);
+                // Draggable code start
+                var startX = 0, startY = 0, x = 0, y = 0;
+                element.on('mousedown', function(event) {
+                    if (scope.paneldata.draggable) {
+                        // Prevent default dragging of selected content
+                        event.preventDefault();
+                        // Work out where your cursor is in respect of the panel when you first click
+                        startX = event.pageX - x;
+                        startY = event.pageY - y;
+                        // Attach handlers
+                        $document.bind('mousemove', mousemove);
+                        $document.bind('mouseup', mouseup);
+                    }
+                });
+                var mousemove = function(event) {
+                    y = event.pageY - startY;
+                    x = event.pageX - startX;
+                    // Send the coords up to the parent so the Panel moves with the Heading
+                    parentCtrl.updatePanelPosn(x,y);
+                };
 
-// Creates a draggable handle that leaves the rest of the panel free
-angular.module('scripts').directive('panelaccordionbody', ['$document', function($document) {
-    return {
-        restrict: 'EA',
-        // All the data is on the top level dir - require this to get data and funcs
-        require: '^jksPanel',
-        replace: true,
-        template: '<div id="{{paneldata.id}}_panelAccordionBody"  ng-style="calcHeight()" ng-include="paneldata.getTemplateUrl()"></div>',
-        link: function(scope, element, attr, parentCtrl) {
-            scope.calcHeight = function() {
-                parentCtrl.calcHeight(scope.paneldata);
-            };
-        }
-    };
-}]);
+                var mouseup = function(event) {
+                    //console.log('mouseup el width '+ element[0].style.width);
+                    event.preventDefault();
+                    // Disconnect the handlers
+                    $document.unbind('mousemove', mousemove);
+                    $document.unbind('mouseup', mouseup);
+                };
+                // Draggable code end
+            }
+        };
+    }])
+    .directive('panelaccordionmessage', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            require: '^jksPanel',
+            template: '<div ng-show="paneldata.showBody===true && paneldata.message.value.length>0" id="{{paneldata.id}}_panelMessage" class="jks_panelMessage">\
+                            <span id="{{paneldata.id}}_message" class="jks_message" ng-style="{\'color\':getColour()}">{{paneldata.message.value}}</span>\
+                            <span ng-style="{\'display\':\'inline-block\', \'vertical-align\':\'top\'}">\
+                            <a class="btn-sm btn-default" data-ng-click="handleMessage()">OK</a>\
+                            </span>\
+                       </div>',
+            link: function(scope, element, attr, parentCtrl) {
+                scope.getColour = function() {
+                    if (scope.paneldata.message && scope.paneldata.message.type) {
+                        var colour = '';
+                        switch (scope.paneldata.message.type) {
+                            case('success'):
+                                colour = 'green';
+                                break;
+                            case('error'):
+                                colour = 'red';
+                                break;
+                            case('busy'):
+                                colour = 'orange';
+                                break;
+                        }
+                        return colour;
+                    }
+                };
+
+                scope.handleMessage = function() {
+                    if (scope.paneldata.handleMessage) {
+                        scope.paneldata.handleMessage();
+                    } else {
+                        scope.paneldata.message = {};
+                    }
+                    parentCtrl.calcHeight(scope.paneldata);
+                };
+            }
+        };
+    }])
+    .directive('panelaccordionbody', ['$document', function($document) {
+        return {
+            restrict: 'EA',
+            // All the data is on the top level dir - require this to get data and funcs
+            require: '^jksPanel',
+            replace: true,
+            template: '<div id="{{paneldata.id}}_panelAccordionBody"  ng-style="calcHeight()" ng-include="paneldata.getTemplateUrl()"></div>',
+            link: function(scope, element, attr, parentCtrl) {
+                scope.calcHeight = function() {
+                    parentCtrl.calcHeight(scope.paneldata);
+                };
+            }
+        };
+    }]);
