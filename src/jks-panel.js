@@ -17,14 +17,13 @@ angular.module('jks-panel', [])
             // The panel holds the positioning and size controls
             template: '<div id="{{paneldata.id}}_panel" class="jks_panel" ng-show="paneldata.isVisible()" style="left:{{paneldata.panelleft}}px; top:{{paneldata.paneltop}}px; width:{{paneldata.width}}px; height:{{paneldata.height}}px">\
                 <div id="{{paneldata.id}}_panelAccordionHeading" panelaccordionheading></div>\
-                <div id="{{paneldata.id}}_panelaccordionmessage" panelaccordionmessage></div>\
-                <div id="{{paneldata.id}}_panelAccordionBody" panelaccordionbody></div>\
+                <div panelaccordionmessage></div>\
+                <div panelaccordionbody></div>\
                 <div panelsdiv></div>\
                 <div panelediv></div>\
                 <div panelsediv></div>\
                 </div>',
             controller: function($scope, $element, $attrs)  {
-                console.log('STEW is this working');
                 // Move the panel
                 var xConst = $scope.paneldata.panelleft;
                 var yConst = $scope.paneldata.paneltop;
@@ -49,14 +48,24 @@ angular.module('jks-panel', [])
                 this.calcHeight = function(paneldata) {
                     var bodyEl = document.getElementById(paneldata.id+'_panelAccordionBody');
                     var panelHeight = paneldata.expandedHeight;
-                    if (paneldata.showBody) {
-                        var headerHeight = document.getElementById(paneldata.id+'_panelAccordionHeading').offsetHeight;
-                        var messageHeight = document.getElementById(paneldata.id+'_panelMessage').offsetHeight;
+                    if (paneldata.showBody && bodyEl) {
+                        var headerHeight = 0;
+                        var header = document.getElementById(paneldata.id+'_panelAccordionHeading');
+                        if (header && header.offsetHeight) {
+                            headerHeight = header.offsetHeight;
+                        }
+                        var messageHeight = 0;
+                        var message = document.getElementById(paneldata.id+'_panelMessage');
+                        if (message && message.offsetHeight) {
+                            messageHeight = message.offsetHeight;
+                        }
                         var newHeight = panelHeight - headerHeight - messageHeight;
                         //console.log('show body calc height '+paneldata.id+' '+newHeight);
                         bodyEl.style.height = newHeight+'px';
                     } else {
-                        bodyEl.style.height = '0px';
+                        if (bodyEl) {
+                            bodyEl.style.height = '0px';
+                        }
                     }
                 };
 
@@ -298,16 +307,18 @@ angular.module('jks-panel', [])
                 scope.getColour = function() {
                     if (scope.paneldata.message && scope.paneldata.message.type) {
                         var colour = '';
-                        switch (scope.paneldata.message.type) {
-                            case('success'):
-                                colour = 'green';
-                                break;
-                            case('error'):
-                                colour = 'red';
-                                break;
-                            case('busy'):
-                                colour = 'orange';
-                                break;
+                        if (scope.paneldata.message && scope.paneldata.message.type) {
+                            switch (scope.paneldata.message.type) {
+                                case('success'):
+                                    colour = 'green';
+                                    break;
+                                case('error'):
+                                    colour = 'red';
+                                    break;
+                                case('busy'):
+                                    colour = 'orange';
+                                    break;
+                            }
                         }
                         return colour;
                     }
@@ -330,7 +341,7 @@ angular.module('jks-panel', [])
             // All the data is on the top level dir - require this to get data and funcs
             require: '^jksPanel',
             replace: true,
-            template: '<div id="{{paneldata.id}}_panelAccordionBody"  ng-style="calcHeight()" ng-include="paneldata.getTemplateUrl()"></div>',
+            template: '<div id="{{paneldata.id}}_panelAccordionBody" ng-style="calcHeight()" ng-include="paneldata.getTemplateUrl()"></div>',
             link: function(scope, element, attr, parentCtrl) {
                 scope.calcHeight = function() {
                     parentCtrl.calcHeight(scope.paneldata);
