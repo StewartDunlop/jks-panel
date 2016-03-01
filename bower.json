@@ -1,0 +1,24 @@
+{
+  "name": "jksPanel",
+  "version": "0.0.0",
+  "authors": [
+    "Stewart Dunlop <stewartdunlopuk@gmail.com>"
+  ],
+  "description": "Angular directive for draggable, resizable accordion panel, using code injection",
+  "main": "jkaPanel.js",
+  "keywords": [
+    "Draggable",
+    "resizable",
+    "accordion",
+    "no jquery dependency",
+    "panel"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
