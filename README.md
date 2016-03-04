@@ -9,11 +9,11 @@ Notes with weblinks
 
 ##### Examples
 In your page
-    '''<div jks-panel paneldata="panelData1"></div>
-    <div jks-panel paneldata="panelData2"></div>'''
+    ```<div jks-panel paneldata="panelData1"></div>
+    <div jks-panel paneldata="panelData2"></div>```
 
 ##### In your controller
-'''
+```
         $scope.panelData1 = {
             // Initial conditions
             id: 'yourPanelId',
@@ -67,4 +67,4 @@ In your page
                 }
             }
         };
-'''
+```
