@@ -29,8 +29,17 @@ angular.module('jks-panel', [])
                 var yConst = $scope.paneldata.paneltop;
                 this.updatePanelPosn = function(xVal, yVal) {
                     $scope.paneldata.moving = 'moving';
-                    $scope.paneldata.panelleft = xConst + xVal;
-                    $scope.paneldata.paneltop = yConst+yVal;
+                    if ($scope.paneldata.topLimit!==undefined && (yVal+yConst)<$scope.paneldata.topLimit) {
+                        $scope.paneldata.paneltop = $scope.paneldata.topLimit;
+                    } else {
+                        $scope.paneldata.paneltop = yConst+yVal;
+                    }
+                    if ($scope.paneldata.leftLimit!==undefined && (xVal+xConst)<$scope.paneldata.leftLimit) {
+                        $scope.paneldata.panelleft = $scope.paneldata.leftLimit;
+                    } else {
+                        $scope.paneldata.panelleft = xConst + xVal;
+                    }
+
                     $scope.$apply();
                 };
 
@@ -126,6 +135,30 @@ angular.module('jks-panel', [])
                     //console.log('done drag start ');
                 };
 
+                $scope.setWidth = function(startPosition, offsetx) {
+                    if ($scope.paneldata.minWidth!==undefined && Number(startPosition.startwidth - offsetx)<$scope.paneldata.minWidth) {
+                        panelElement[0].style.width = $scope.paneldata.minWidth + 'px';
+                        $scope.paneldata.width = $scope.paneldata.minWidth;
+                        panelElement[0].style.maxWidth = $scope.paneldata.minWidth + 'px';
+                    } else {
+                        panelElement[0].style.width = startPosition.startwidth - offsetx + 'px';
+                        $scope.paneldata.width = startPosition.startwidth - offsetx;
+                        panelElement[0].style.maxWidth = startPosition.startwidth - offsetx + 'px';
+                    }
+                };
+
+                $scope.setHeight = function(startPosition, offsety) {
+                    if ($scope.paneldata.minHeight!==undefined && Number(startPosition.minHeight - offsety)<$scope.paneldata.minHeight) {
+                        panelElement[0].style.height = $scope.paneldata.minHeight + 'px';
+                        $scope.paneldata.height = $scope.paneldata.minHeight;
+                        panelElement[0].expandedHeight = $scope.paneldata.minHeight;
+                    } else {
+                        panelElement[0].style.height = startPosition.startheight - offsety + 'px';
+                        $scope.paneldata.height = startPosition.startheight - offsety;
+                        panelElement[0].expandedHeight = startPosition.startheight - offsety;
+                    }
+                };
+
                 $scope.jks_dragging = function(event) {
                     event.preventDefault();
                     if ($scope.startPosition) {
@@ -138,27 +171,20 @@ angular.module('jks-panel', [])
                             case 's':
                                 //console.log('dragging s '+$element[0].id);
                                 if (offsety !== 0) {
-                                    panelElement[0].style.height =startPosition.startheight - offsety + 'px';
-                                    $scope.paneldata.height = startPosition.startheight - offsety;
-                                    $scope.paneldata.expandedHeight = startPosition.startheight - offsety;
+                                    $scope.setHeight(startPosition, offsety);
                                 }
                                 break;
                             case 'e':
                                 if (offsetx !== 0) {
-                                    panelElement[0].style.width = startPosition.startwidth - offsetx + 'px';
-                                    panelElement[0].style.maxWidth = startPosition.startwidth - offsetx + 'px';
-                                    $scope.paneldata.width = startPosition.startwidth - offsetx;
+                                    $scope.setWidth(startPosition, offsetx);
                                 }
                                 break;
                             case 'se':
                                 if (offsetx !== 0) {
-                                    panelElement[0].style.width = startPosition.startwidth - offsetx + 'px';
-                                    $scope.paneldata.width = startPosition.startwidth - offsetx;
+                                    $scope.setWidth(startPosition, offsetx);
                                 }
                                 if (offsety !== 0) {
-                                    panelElement[0].style.height = startPosition.startheight - offsety + 'px';
-                                    $scope.paneldata.height = startPosition.startheight - offsety;
-                                    $scope.paneldata.expandedHeight = startPosition.startheight - offsety;
+                                    $scope.setHeight(startPosition, offsety);
                                 }
                                 break;
                         }
