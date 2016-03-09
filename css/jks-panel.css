@@ -90,58 +90,8 @@
     width:100%;
 }
 
-
 .additem {
     cursor : pointer;
-}
-
-.addCharacter {
-    padding:2px;
-    top:2px;
-}
-
-.editCharacter {
-    padding:2px;
-    top:2px;
-}
-
-.characterList {
-    float: left;
-    padding:2px;
-    width:100%;
-    overflow-y: scroll;
-}
-
-.character_input {
-    min-width:17px;
-    display: inline-block;
-    margin: 2px;
-    padding-right:5px;
-}
-
-.character {
-    display: inline-block;
-    padding-bottom:2px;
-}
-
-.horizLine {
-    border-top: 1px solid black;
-    line-height: 1px;
-    margin-bottom:3px;
-    margin-top:3px;
-}
-
-.colourBox {
-    display: inline-block;
-    width:15px;
-    height:15px;
-    border: 1px solid black;
-}
-
-.vertAlignInput {
-    display: inline-block;
-    vertical-align: top;
-    width:25%;
 }
 
 .notesInput {
