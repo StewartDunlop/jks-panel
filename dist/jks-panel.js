@@ -156,6 +156,9 @@ angular.module('jks-panel', [])
                         panelElement[0].style.height = startPosition.startheight - offsety + 'px';
                         $scope.paneldata.height = startPosition.startheight - offsety;
                         panelElement[0].expandedHeight = startPosition.startheight - offsety;
+                        if ($scope.paneldata.recalc) {
+                            $scope.paneldata.recalc();
+                        }
                     }
                 };
 
