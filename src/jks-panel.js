@@ -39,7 +39,6 @@ angular.module('jks-panel', [])
                     } else {
                         $scope.paneldata.panelleft = xConst + xVal;
                     }
-
                     $scope.$apply();
                 };
 
@@ -156,9 +155,7 @@ angular.module('jks-panel', [])
                         panelElement[0].style.height = startPosition.startheight - offsety + 'px';
                         $scope.paneldata.height = startPosition.startheight - offsety;
                         panelElement[0].expandedHeight = startPosition.startheight - offsety;
-                        if ($scope.paneldata.recalc) {
-                            $scope.paneldata.recalc();
-                        }
+                        $scope.paneldata.expandedHeight = panelElement[0].style.height.replace('px','');
                     }
                 };
 
