@@ -15,7 +15,7 @@ angular.module('jks-panel', [])
                 paneldata: '='
             },
             // The panel holds the positioning and size controls
-            template: '<div id="{{paneldata.id}}_panel" class="jks_panel" ng-show="paneldata.isVisible()" style="left:{{paneldata.panelleft}}px; top:{{paneldata.paneltop}}px; width:{{paneldata.width}}px; height:{{paneldata.height}}px">\
+            template: '<div id="{{paneldata.id}}_panel" class="jks_panel" ng-show="paneldata.isVisibleFlag && paneldata.isVisible()" style="left:{{paneldata.panelleft}}px; top:{{paneldata.paneltop}}px; width:{{paneldata.width}}px; height:{{paneldata.height}}px">\
                 <div id="{{paneldata.id}}_panelAccordionHeading" panelaccordionheading></div>\
                 <div panelaccordionmessage></div>\
                 <div panelaccordionbody></div>\
