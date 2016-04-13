@@ -28,7 +28,7 @@ angular.module('jks-panel', [])
                 var xConst = $scope.paneldata.panelleft;
                 var yConst = $scope.paneldata.paneltop;
                 this.updatePanelPosn = function(xVal, yVal) {
-                    if (xVal>3 || yVal>3) {
+                    if (Maths.abs(xVal)>3 || Math.abs(yVal)>3) {
                         $scope.paneldata.moving = 'moving';
                         if ($scope.paneldata.topLimit !== undefined && (yVal + yConst) < $scope.paneldata.topLimit) {
                             $scope.paneldata.paneltop = $scope.paneldata.topLimit;
